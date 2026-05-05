@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.30
+
+- fix(app-service-templates): address review feedback — discoverability, auth IaC, token refresh, source splits ([#1635](https://github.com/microsoft/azure-skills/pull/1635))
+
 ## 1.1.25
 
 - fix: update toolbox sample link ([#2078](https://github.com/microsoft/azure-skills/pull/2078))
