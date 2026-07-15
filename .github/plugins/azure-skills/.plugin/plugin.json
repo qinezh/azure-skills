@@ -20,5 +20,8 @@
     "diagnostics"
   ],
   "skills": "./skills/",
+  "extensions": [
+    "./extensions/foundry-agent-canvas"
+  ],
   "mcpServers": "./.mcp.json"
 }
