@@ -4,7 +4,7 @@ description: "Manage Foundry agents with azd: hosted agent scaffold/run/deploy, 
 license: MIT
 metadata:
   author: Microsoft
-  version: "1.2.3"
+  version: "1.2.4"
 ---
 
 # Microsoft Foundry Skill
