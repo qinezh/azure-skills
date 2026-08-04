@@ -1,0 +1,4 @@
+interface:
+  display_name: "Microsoft Foundry Managed Agent PoC"
+  short_description: "Create and deploy private-preview Managed Agents"
+  default_prompt: "/microsoft-foundry-managed-poc Create a Microsoft Foundry Managed Agent using the private-preview workflow."

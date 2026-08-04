@@ -16,7 +16,7 @@ Do not use it for:
 - Hosted Agents that package Python, .NET, or container code.
 - Evaluation, monitoring, CI/CD, or production-hardening work.
 
-This is a self-contained create/deploy/invoke path. Do not continue into the general [deploy](../deploy/deploy.md) or [invoke](../invoke/invoke.md) workflows.
+This is a self-contained create/deploy/invoke path. Do not continue into general Prompt or Hosted Agent deploy and invoke workflows.
 
 ## Fixed Preview Contract
 
@@ -29,7 +29,7 @@ This is a self-contained create/deploy/invoke path. Do not continue into the gen
 | Redeploy after edits | `azd deploy` |
 | Remote smoke test | `azd ai agent invoke "<message>"` |
 
-Always follow [azd guidance](../azd-guidance/azd-guidance.md). Every `azd` command below uses the required one-command telemetry scope:
+Every `azd` command below uses the required one-command telemetry scope:
 
 ```bash
 AZURE_DEV_USER_AGENT=microsoft_foundry_skill azd <command>

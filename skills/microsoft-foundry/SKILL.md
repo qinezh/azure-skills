@@ -1,10 +1,10 @@
 ---
 name: microsoft-foundry
-description: "Manage Foundry agents with azd: hosted agent scaffold/run/deploy, prompt agent create, managed agent PoC, batch eval, continuous eval, prompt optimizer, Agent Optimizer scaffold, agent.yaml, dataset curation from traces, model fine-tuning (SFT/DPO/RFT). USE FOR: azd ai agent, azd provision/deploy, deploy agent, hosted agent, managed agent, create agent, add tool to agent, invoke agent, evaluate agent, continuous eval, continuous monitoring, agent CI/CD, optimize prompt, improve prompt, optimize agent instructions, agent optimizer, deploy model, Foundry project, RBAC, role assignment, permissions, quota, capacity, region, troubleshoot agent, deployment failure, AI Services, create Foundry resource, provision, knowledge index, customize deployment, onboard, availability, fine-tune, SFT, DPO, RFT, training-data, grader, distillation, fine-tuned model, large file upload. DO NOT USE FOR: Azure Functions, App Service, general Azure deploy (use azure-deploy), general Azure prep (use azure-prepare)."
+description: "Deploy, evaluate, fine-tune, and manage Foundry agents end-to-end with azd: hosted agent scaffold/run/deploy, prompt agent create, batch eval, continuous eval, prompt optimizer, Agent Optimizer scaffold, agent.yaml, dataset curation from traces, model fine-tuning (SFT/DPO/RFT). USE FOR: azd ai agent, azd provision/deploy, deploy agent, hosted agent, create agent, add tool to agent, invoke agent, evaluate agent, continuous eval, continuous monitoring, agent CI/CD, optimize prompt, improve prompt, optimize agent instructions, agent optimizer, deploy model, Foundry project, RBAC, role assignment, permissions, quota, capacity, region, troubleshoot agent, deployment failure, AI Services, create Foundry resource, provision, knowledge index, customize deployment, onboard, availability, fine-tune, SFT, DPO, RFT, training-data, grader, distillation, fine-tuned model, large file upload. DO NOT USE FOR: Azure Functions, App Service, general Azure deploy (use azure-deploy), general Azure prep (use azure-prepare)."
 license: MIT
 metadata:
   author: Microsoft
-  version: "1.2.4"
+  version: "1.2.2"
 ---
 
 # Microsoft Foundry Skill
@@ -54,7 +54,6 @@ This skill includes specialized sub-skills for specific workflows. **When a sub-
 | **observe** | Evaluate agent quality, run batch evals, analyze failures, optimize prompts, improve agent instructions, compare versions, set up CI/CD monitoring, and enable continuous production evaluation | [observe](foundry-agent/observe/observe.md) |
 | **trace** | Query traces, analyze latency/failures, correlate eval results to specific responses via App Insights `customEvents` | [trace](foundry-agent/trace/trace.md) |
 | **troubleshoot** | View hosted agent logs, query telemetry, diagnose failures | [troubleshoot](foundry-agent/troubleshoot/troubleshoot.md) |
-| **create (managed agent PoC)** | Create, deploy, and remotely invoke a private-preview Managed Agent that uses `instructions.md` and local `skills/*/SKILL.md`. Use only when the user explicitly asks for a Managed Agent or the private-preview managed harness. This file is mandatory and authoritative for the PoC; do not substitute public Prompt or Hosted Agent guidance. | [create/quick-start-managed.md](foundry-agent/create/quick-start-managed.md) |
 | **create (quick start)** | Create a new hosted Foundry agent from scratch end-to-end — scaffold, provision or use an existing Foundry project, deploy, and smoke-test. Do not use for any work on existing code. For anything not covered by the quickstart, use **create**. | [create/quick-start-hosted.md](foundry-agent/create/quick-start-hosted.md) |
 | **create** | Use when the standard end-to-end happy path doesn't fit. Create a new Foundry agent, update code of an existing agent, continue development of an existing agent, wire connections at scaffold time, use advanced setup or A2A (Agent2Agent), or recover from a failed quickstart run. | [create](foundry-agent/create/create-hosted.md) |
 | **agent-optimizer** | Make existing Python hosted-agent code optimization-ready, configure eval.yaml, run Agent Optimizer jobs, apply candidates locally, and deploy through azd after review. | [agent-optimizer](foundry-agent/agent-optimizer/agent-optimizer.md) |
@@ -93,7 +92,6 @@ Match user intent to the correct agent workflow. Read each sub-skill in order be
 
 | User Intent | Workflow (read in order) |
 |-------------|------------------------|
-| Create a private-preview Managed Agent end-to-end (instructions + local skills + deploy + remote test) | [dependency check and setup](#dependency-check-and-setup) → [azd-guidance](foundry-agent/azd-guidance/azd-guidance.md) → [quick-start-managed](foundry-agent/create/quick-start-managed.md) (self-contained PoC; `westus2` only) |
 | Create a new hosted agent end-to-end (scaffold + deploy + test) | [dependency check and setup](#dependency-check-and-setup) → [azd-guidance](foundry-agent/azd-guidance/azd-guidance.md) → [quick-start-hosted](foundry-agent/create/quick-start-hosted.md) (self-contained end-to-end) |
 | Anything beyond the standard quickstart (existing code, migration, re-hosting, deployment customization, scaffold-time connections, A2A (Agent2Agent), recovery) | [dependency check and setup](#dependency-check-and-setup) → [azd-guidance](foundry-agent/azd-guidance/azd-guidance.md) → [create](foundry-agent/create/create-hosted.md) → [deploy](foundry-agent/deploy/deploy.md) → [invoke](foundry-agent/invoke/invoke.md) |
 | Optimize existing Python hosted agent | [dependency check and setup](#dependency-check-and-setup) → [azd-guidance](foundry-agent/azd-guidance/azd-guidance.md) → [agent-optimizer](foundry-agent/agent-optimizer/agent-optimizer.md) → scaffold/review → eval.yaml → optimize → apply candidate → deploy → invoke |
@@ -246,16 +244,14 @@ Use the `ask_user` or `askQuestions` tool **only for values not resolved** from 
 
 ## Agent: Agent Types
 
-General agent workflows support two agent types:
+All agent skills support two agent types:
 
 | Type | Kind | Description |
 |------|------|-------------|
 | **Prompt** | `"prompt"` | LLM-based agents backed by a model deployment |
 | **Hosted** | `"hosted"` | Container-based agents running custom code |
 
-Treat an `azure.yaml` service with `host: azure.ai.agent` as Hosted unless it has the Managed Agent preview fingerprint: `config.promptAgent` in the service plus `kind: prompt` in `agent.yaml`. Use `agent_get` only when the type cannot be resolved from project context.
-
-Managed Agents are a separate private-preview CLI workflow. The deployed API maps them to `kind: prompt` with the `ghcp` harness, but they are not ordinary Prompt or Hosted agents. Do not send them through the general deploy, invoke, evaluation, or monitoring workflows, and do not replace the private-preview commands with public agent guidance. Route explicit Managed Agent requests and workspaces with the preview fingerprint to [Quick Start: Managed Agent PoC](foundry-agent/create/quick-start-managed.md), then read and follow it before taking any workflow step.
+Treat an `azure.yaml` service with `host: azure.ai.agent` as Hosted. Use `agent_get` only when the type cannot be resolved from project context.
 
 ## Tool Usage Conventions
 
